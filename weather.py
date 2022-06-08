@@ -6,7 +6,6 @@ app = Flask(__name__)
 @app.route("/current-weather/<lat>/<lon>")
 def fetch_weather(lat, lon):
   apiKey = "5003aab957ef5495752bd28c41b7abd7"
-  print(lat)
   uri = "https://api.openweathermap.org/data/3.0/onecall?lat={0}&lon={1}&exclude=minutely,hourly,daily&appid={2}".format(lat, lon, apiKey)
   resp = requests.get(uri)
   if resp.status_code < 300:
