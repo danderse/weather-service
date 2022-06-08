@@ -6,14 +6,14 @@ app = Flask(__name__)
 @app.route("/current-weather/<lat>/<lon>")
 def fetch_weather(lat, lon):
   apiKey = "5003aab957ef5495752bd28c41b7abd7"
-  uri = "https://api.openweathermap.org/data/3.0/onecall?lat={0}&lon={1}&exclude=minutely,hourly,daily&appid={2}".format(lat, lon, apiKey)
+  uri = "https://api.openweathermap.org/data/2.5/weather?appid={0}&lat={1}&lon={2}&units=imperial".format(apiKey, lat, lon)
   resp = requests.get(uri)
   if resp.status_code < 300:
     data = resp.json()
     return {
-      "condition": [{"main": w.main, "description": w.description} for w in data.current.weather],
-      "temp_feels": how_does_temp_feel(data.current.temp),
-      "alerts": [{"event": a.event, "description": a.description} for a in data.alerts]
+      "condition": [{"main": w["main"], "description": w["description"]} for w in data["weather"]],
+      "temp_feels": how_does_temp_feel(data["main"]["temp"])
+      #"alerts": [{"event": a.event, "description": a.description} for a in data.alerts]
     }
   else:
     return make_response ({
